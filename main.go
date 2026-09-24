@@ -19,4 +19,11 @@ func main() {
 
 	mux.HandleFunc("/hello", helloHandler)
 	mux.HandleFunc("/about", aboutHandler)
+
+	fmt.Println("Sever listening on :3000")
+
+	err := http.ListenAndServe(":3000", mux)
+	if err != nil {
+		fmt.Println("Error starting server", err)
+	}
 }
