@@ -15,10 +15,10 @@ func aboutHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	mux := http.NewServeMux()
+	mux := http.NewServeMux() // router
 
-	mux.HandleFunc("/hello", helloHandler)
-	mux.HandleFunc("/about", aboutHandler)
+	mux.HandleFunc("/hello", helloHandler) // route
+	mux.HandleFunc("/about", aboutHandler) // route
 
 	fmt.Println("Sever listening on :3000")
 
