@@ -22,7 +22,7 @@ func main() {
 
 	fmt.Println("Sever listening on :3000")
 
-	err := http.ListenAndServe(":3000", mux)
+	err := http.ListenAndServe(":3000", mux) // failed to start the server
 	if err != nil {
 		fmt.Println("Error starting server", err)
 	}
