@@ -6,6 +6,7 @@ import (
 )
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "Application/json")
 	fmt.Fprintln(w, "Hello, World!")
 }
 
@@ -17,7 +18,7 @@ func main() {
 
 	mux := http.NewServeMux() // router
 
-	mux.HandleFunc("/hello", helloHandler) // route
+	mux.HandleFunc("/", helloHandler)      // route
 	mux.HandleFunc("/about", aboutHandler) // route
 
 	fmt.Println("Sever listening on :3000")
