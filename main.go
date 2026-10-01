@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -14,13 +15,6 @@ func aboutHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Text about information....")
 }
 
-func getProducts(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Bad request", 400)
-		return
-	}
-}
-
 type Product struct {
 	ID          int
 	Title       string
@@ -30,6 +24,17 @@ type Product struct {
 }
 
 var productList []Product
+
+func getProducts(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Bad request", 400)
+		return
+	}
+
+	encoder := json.NewEncoder(w)
+
+	encoder.Encode(productList)
+}
 
 func main() {
 
@@ -95,4 +100,5 @@ func init() {
 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/c/cb/Pineapple_and_cross_section.jpg",
 	}
 
+	productList = append(productList, prd1, prd2, prd3, prd4, prd5, prd6)
 }
