@@ -21,6 +21,14 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+type Product struct {
+	ID          int
+	Title       string
+	Description string
+	Price       float64
+	ImgUrl      string
+}
+
 func main() {
 
 	mux := http.NewServeMux() // router
