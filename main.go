@@ -16,7 +16,7 @@ func aboutHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 type Product struct {
-	ID          int `json:id`
+	ID          int `json:"id"`
 	Title       string
 	Description string
 	Price       float64
