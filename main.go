@@ -28,6 +28,11 @@ var productList []Product
 func getProducts(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
+	// allow custom headers
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	// allow multiple custom headers
+	// w.Header().Set("Access-Control-Allow-Headers", "Content-Type", "Custom-header1")
 
 	if r.Method != http.MethodGet {
 		http.Error(w, "Bad request", 400)
