@@ -41,7 +41,14 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 
 func createProducts(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Content-Type", "application/json")
+
+	if r.Method != "OPTIONS" {
+		w.WriteHeader(200)
+		return
+	}
 
 	if r.Method != "POST" {
 		http.Error(w, "Bad request", 400)
@@ -62,6 +69,7 @@ func createProducts(w http.ResponseWriter, r *http.Request) {
 
 	productList = append(productList, newProduct)
 
+	w.WriteHeader(201)
 	encoder := json.NewEncoder(w)
 	encoder.Encode(newProduct)
 }
