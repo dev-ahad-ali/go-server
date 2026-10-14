@@ -39,6 +39,33 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 	encoder.Encode(productList)
 }
 
+func createProducts(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
+
+	if r.Method != "POST" {
+		http.Error(w, "Bad request", 400)
+		return
+	}
+
+	var newProduct Product
+
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&newProduct)
+
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "Please give me valid JSON", 400)
+	}
+
+	newProduct.ID = len(productList) + 1
+
+	productList = append(productList, newProduct)
+
+	encoder := json.NewEncoder(w)
+	encoder.Encode(newProduct)
+}
+
 func main() {
 
 	mux := http.NewServeMux() // router
@@ -46,6 +73,7 @@ func main() {
 	mux.HandleFunc("/", helloHandler)      // route
 	mux.HandleFunc("/about", aboutHandler) // route
 	mux.HandleFunc("/products", getProducts)
+	mux.HandleFunc("/create-products", createProducts)
 
 	fmt.Println("Sever listening on :3000")
 
