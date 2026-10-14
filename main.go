@@ -42,6 +42,12 @@ func handlePreflight(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func sendData(w http.ResponseWriter, data interface{}, statusCode int) {
+	w.WriteHeader(statusCode)
+	encoder := json.NewEncoder(w)
+	encoder.Encode(data)
+}
+
 func getProducts(w http.ResponseWriter, r *http.Request) {
 	handleCors(w)
 	handlePreflight(w, r)
@@ -51,9 +57,7 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	encoder := json.NewEncoder(w)
-
-	encoder.Encode(productList)
+	sendData(w, productList, 200)
 }
 
 func createProducts(w http.ResponseWriter, r *http.Request) {
@@ -79,9 +83,7 @@ func createProducts(w http.ResponseWriter, r *http.Request) {
 
 	productList = append(productList, newProduct)
 
-	w.WriteHeader(201)
-	encoder := json.NewEncoder(w)
-	encoder.Encode(newProduct)
+	sendData(w, newProduct, 201)
 }
 
 func main() {
