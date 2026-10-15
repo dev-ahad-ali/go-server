@@ -64,11 +64,6 @@ func createProducts(w http.ResponseWriter, r *http.Request) {
 	handleCors(w)
 	handlePreflight(w, r)
 
-	if r.Method != "POST" {
-		http.Error(w, "Bad request", 400)
-		return
-	}
-
 	var newProduct Product
 
 	decoder := json.NewDecoder(r.Body)
@@ -90,10 +85,11 @@ func main() {
 
 	mux := http.NewServeMux() // router
 
-	mux.HandleFunc("/", helloHandler)      // route
-	mux.HandleFunc("/about", aboutHandler) // route
-	mux.HandleFunc("/products", getProducts)
-	mux.HandleFunc("/create-products", createProducts)
+	mux.Handle("GET /", http.HandlerFunc(helloHandler))      // route
+	mux.Handle("GET /about", http.HandlerFunc(aboutHandler)) // route
+	mux.Handle("GET /products", http.HandlerFunc(getProducts))
+	mux.Handle("OPTIONS /products", http.HandlerFunc(getProducts))
+	mux.Handle("POST /create-products", http.HandlerFunc(createProducts))
 
 	fmt.Println("Sever listening on :3000")
 
