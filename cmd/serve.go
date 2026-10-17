@@ -12,7 +12,8 @@ func Serve() {
 	mux := http.NewServeMux() // router
 
 	mux.Handle("GET /products", http.HandlerFunc(handlers.GetProducts))
-	mux.Handle("POST /create-products", http.HandlerFunc(handlers.CreateProducts))
+	mux.Handle("POST /products", http.HandlerFunc(handlers.CreateProducts))
+	mux.Handle("GET /products/{productId}", http.HandlerFunc(handlers.GetProductById))
 
 	fmt.Println("Sever listening on :3000")
 
