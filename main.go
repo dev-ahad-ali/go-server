@@ -1,6 +1,9 @@
 package main
 
 import (
+	"ecommerce/handlers"
+	"ecommerce/lib"
+	"ecommerce/utils"
 	"fmt"
 	"net/http"
 )
@@ -14,16 +17,6 @@ func aboutHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Text about information....")
 }
 
-type Product struct {
-	ID          int     `json:"id"`
-	Title       string  `json:"title"`
-	Description string  `json:"description"`
-	Price       float64 `json:"price"`
-	ImgUrl      string  `json:"imageUrl"`
-}
-
-var productList []Product
-
 func main() {
 
 	mux := http.NewServeMux() // router
@@ -31,12 +24,12 @@ func main() {
 	mux.Handle("GET /", http.HandlerFunc(helloHandler))      // route
 	mux.Handle("GET /about", http.HandlerFunc(aboutHandler)) // route
 
-	mux.Handle("GET /products", http.HandlerFunc(getProducts))
-	mux.Handle("POST /create-products", http.HandlerFunc(createProducts))
+	mux.Handle("GET /products", http.HandlerFunc(handlers.GetProducts))
+	mux.Handle("POST /create-products", http.HandlerFunc(handlers.CreateProducts))
 
 	fmt.Println("Sever listening on :3000")
 
-	globalRouter := globalRouter(mux)
+	globalRouter := utils.GlobalRouter(mux)
 
 	err := http.ListenAndServe(":3000", globalRouter) // failed to start the server
 	if err != nil {
@@ -45,7 +38,7 @@ func main() {
 }
 
 func init() {
-	prd1 := Product{
+	prd1 := lib.Product{
 		ID:          1,
 		Title:       "Orange",
 		Description: "lorem diej eifie e iifieh id feuhiojgn oe oe oiejoij oe o",
@@ -53,14 +46,14 @@ func init() {
 		ImgUrl:      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNYH1D8zGWCajbNbCmeD16reW0UBuZwyVu-LeFLsrsRA&s=10",
 	}
 
-	prd2 := Product{
+	prd2 := lib.Product{
 		ID:          2,
 		Title:       "Apple",
 		Description: "lorem diej eifie e iifieh id feuhiojgn oe oe oiejoij oe o oaojdfodof",
 		Price:       20.99,
 		ImgUrl:      "https://cdn.britannica.com/22/187222-050-07B17FB6/apples-on-a-tree-branch.jpg",
 	}
-	prd3 := Product{
+	prd3 := lib.Product{
 		ID:          3,
 		Title:       "Banana",
 		Description: "lorem diej eifie e iifieh id feuhiojgn oe oe oiejoij oe o",
@@ -68,7 +61,7 @@ func init() {
 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/8/8a/Banana-Single.jpg",
 	}
 
-	prd4 := Product{
+	prd4 := lib.Product{
 		ID:          4,
 		Title:       "Strawberry",
 		Description: "lorem diej eifie e iifieh id feuhiojgn oe oe oiejoij oe o oaojdfodof",
@@ -76,7 +69,7 @@ func init() {
 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/e/e1/Strawberries.jpg",
 	}
 
-	prd5 := Product{
+	prd5 := lib.Product{
 		ID:          5,
 		Title:       "Mango",
 		Description: "lorem diej eifie e iifieh id feuhiojgn oe oe oiejoij oe o",
@@ -84,7 +77,7 @@ func init() {
 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/9/90/Haden_mango_aa.jpg",
 	}
 
-	prd6 := Product{
+	prd6 := lib.Product{
 		ID:          6,
 		Title:       "Pineapple",
 		Description: "lorem diej eifie e iifieh id feuhiojgn oe oe oiejoij oe o oaojdfodof",
@@ -92,5 +85,5 @@ func init() {
 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/c/cb/Pineapple_and_cross_section.jpg",
 	}
 
-	productList = append(productList, prd1, prd2, prd3, prd4, prd5, prd6)
+	lib.ProductList = append(lib.ProductList, prd1, prd2, prd3, prd4, prd5, prd6)
 }
