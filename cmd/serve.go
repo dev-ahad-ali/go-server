@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"ecommerce/handlers"
 	"ecommerce/middleware"
 	"ecommerce/utils"
 	"fmt"
@@ -16,23 +15,9 @@ func Serve() {
 		middleware.Testing,
 	)
 
-	mux := http.NewServeMux() // router
+	mux := http.NewServeMux()
 
-	mux.Handle("GET /test", manger.With(
-		http.HandlerFunc(handlers.Test),
-	))
-
-	mux.Handle("GET /products", manger.With(
-		http.HandlerFunc(handlers.GetProducts),
-	))
-
-	mux.Handle("POST /products", manger.With(
-		http.HandlerFunc(handlers.CreateProducts),
-	))
-
-	mux.Handle("GET /products/{productId}", manger.With(
-		http.HandlerFunc(handlers.GetProductById),
-	))
+	initRoutes(mux, manger)
 
 	fmt.Println("Sever listening on :3000")
 
