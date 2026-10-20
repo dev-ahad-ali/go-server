@@ -1,6 +1,9 @@
 package middleware
 
-import "net/http"
+import (
+	"net/http"
+	"slices"
+)
 
 type Middleware func(http.Handler) http.Handler
 
@@ -14,6 +17,18 @@ func NewManger() *Manger {
 	}
 }
 
-func (mngr *Manger) With(middlewares ...Middleware) {
+func (mngr *Manger) With(middlewares ...Middleware) Middleware {
+	return func(next http.Handler) http.Handler {
+		n := next
 
+		// for i := len(middlewares) - 1; i >= 0; i-- {
+		// 	middleware := middlewares[i]
+		// 	n = middleware(n)
+		// }
+
+		for _, middleware := range slices.Backward(middlewares) {
+			n = middleware(n)
+		}
+		return n
+	}
 }
