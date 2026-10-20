@@ -11,26 +11,27 @@ import (
 func Serve() {
 	manger := middleware.NewManger()
 
+	manger.Use(
+		middleware.Logger,
+		middleware.Testing,
+	)
+
 	mux := http.NewServeMux() // router
 
 	mux.Handle("GET /test", manger.With(
 		http.HandlerFunc(handlers.Test),
-		middleware.Logger,
 	))
 
 	mux.Handle("GET /products", manger.With(
 		http.HandlerFunc(handlers.GetProducts),
-		middleware.Logger,
 	))
 
 	mux.Handle("POST /products", manger.With(
 		http.HandlerFunc(handlers.CreateProducts),
-		middleware.Logger,
 	))
 
 	mux.Handle("GET /products/{productId}", manger.With(
 		http.HandlerFunc(handlers.GetProductById),
-		middleware.Logger,
 	))
 
 	fmt.Println("Sever listening on :3000")
