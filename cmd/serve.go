@@ -9,9 +9,11 @@ import (
 func Serve() {
 	manger := middleware.NewManger()
 
+	// last one runs first
 	manger.Use(
-		middleware.Logger,
 		middleware.Testing,
+		middleware.Logger,
+		middleware.CorsWithPreflight,
 	)
 
 	mux := http.NewServeMux()
@@ -20,9 +22,9 @@ func Serve() {
 
 	fmt.Println("Sever listening on :3000")
 
-	globalRouter := middleware.CorsWithPreflight(mux)
+	wrappedMax := manger.With(mux)
 
-	err := http.ListenAndServe(":3000", globalRouter) // failed to start the server
+	err := http.ListenAndServe(":3000", wrappedMax)
 	if err != nil {
 		fmt.Println("Error starting server", err)
 	}

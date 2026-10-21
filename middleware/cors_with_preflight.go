@@ -2,8 +2,8 @@ package middleware
 
 import "net/http"
 
-func CorsWithPreflight(mux *http.ServeMux) http.Handler {
-	handleAllReq := func(w http.ResponseWriter, r *http.Request) {
+func CorsWithPreflight(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// handle cors
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
@@ -16,8 +16,6 @@ func CorsWithPreflight(mux *http.ServeMux) http.Handler {
 			return
 		}
 
-		mux.ServeHTTP(w, r)
-	}
-
-	return http.HandlerFunc(handleAllReq)
+		next.ServeHTTP(w, r)
+	})
 }
