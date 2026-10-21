@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"ecommerce/middleware"
-	"ecommerce/utils"
 	"fmt"
 	"net/http"
 )
@@ -21,7 +20,7 @@ func Serve() {
 
 	fmt.Println("Sever listening on :3000")
 
-	globalRouter := utils.GlobalRouter(mux)
+	globalRouter := middleware.CorsWithPreflight(mux)
 
 	err := http.ListenAndServe(":3000", globalRouter) // failed to start the server
 	if err != nil {
