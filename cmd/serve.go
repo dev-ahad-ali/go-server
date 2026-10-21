@@ -8,15 +8,13 @@ import (
 
 func Serve() {
 	manger := middleware.NewManger()
-
-	mux := http.NewServeMux()
-
 	manger.Use(
 		middleware.Cors,
 		middleware.Preflight,
 		middleware.Logger,
 	)
 
+	mux := http.NewServeMux()
 	wrappedMax := manger.WrapMux(mux)
 
 	initRoutes(mux, manger)
