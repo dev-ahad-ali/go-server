@@ -1,11 +1,55 @@
 package config
 
+import (
+	"fmt"
+	"os"
+	"strconv"
+)
+
 type Config struct {
 	Version     string
 	ServiceName string
-	HttpPort    int
+	HttpPort    int64
 }
 
-func LoadConfig() {
+var configuration Config
 
+func loadConfig() {
+	version := os.Getenv("VERSION")
+	serviceName := os.Getenv("SERVICE_NAME")
+	httpPort := os.Getenv("HTTP_PORT")
+
+	if version == "" {
+		fmt.Println("Version is required")
+		os.Exit(1)
+	}
+
+	if serviceName == "" {
+		fmt.Println("Service name is required")
+		os.Exit(1)
+	}
+
+	if httpPort == "" {
+		fmt.Println("Http Port is required")
+		os.Exit(1)
+	}
+
+	port, err := strconv.ParseInt(httpPort, 10, 64)
+
+	if err != nil {
+		fmt.Println("Port must be number")
+		os.Exit(1)
+	}
+
+	configuration = Config{
+		Version:     version,
+		ServiceName: serviceName,
+		HttpPort:    port,
+	}
+
+}
+
+func GetConfig() Config {
+	loadConfig()
+	return configuration
 }
