@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -15,6 +17,13 @@ type Config struct {
 var configuration Config
 
 func loadConfig() {
+	err := godotenv.Load()
+
+	if err != nil {
+		fmt.Println("Failed to load the env variables", err)
+		os.Exit(1)
+	}
+
 	version := os.Getenv("VERSION")
 	serviceName := os.Getenv("SERVICE_NAME")
 	httpPort := os.Getenv("HTTP_PORT")
