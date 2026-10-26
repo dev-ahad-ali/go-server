@@ -15,6 +15,8 @@ func (u User) Store() User {
 		return u
 	}
 
+	u.ID = len(users) + 1
+
 	users = append(users, u)
 	return u
 }

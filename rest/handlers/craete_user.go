@@ -16,10 +16,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		fmt.Println(err)
-		http.Error(w, "Please give me valid JSON", 400)
+		http.Error(w, "Please give me valid JSON", http.StatusBadRequest)
 	}
 
-	createdProduct := database.User.Store(newUser)
+	createdUser := newUser.Store()
 
-	utils.SendData(w, createdProduct, 201)
+	utils.SendData(w, createdUser, http.StatusCreated)
 }
