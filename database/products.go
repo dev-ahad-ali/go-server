@@ -8,7 +8,47 @@ type Product struct {
 	ImgUrl      string  `json:"imageUrl"`
 }
 
-var ProductList []Product
+var productList []Product
+
+func Store(p Product) Product {
+	p.ID = len(productList) + 1
+	productList = append(productList, p)
+
+	return p
+}
+
+func List() []Product {
+	return productList
+}
+
+func Get(productId int) *Product {
+	for _, product := range productList {
+		if product.ID == productId {
+			return &product
+		}
+	}
+	return nil
+}
+
+func Update(product Product) {
+	for idx, p := range productList {
+		if p.ID == product.ID {
+			productList[idx] = product
+		}
+	}
+}
+
+func Delete(productId int) {
+	var tempList []Product
+
+	for _, p := range productList {
+		if p.ID == productId {
+			tempList = append(tempList, p)
+		}
+	}
+
+	productList = tempList
+}
 
 func init() {
 	prd1 := Product{
@@ -58,5 +98,5 @@ func init() {
 		ImgUrl:      "https://upload.wikimedia.org/wikipedia/commons/c/cb/Pineapple_and_cross_section.jpg",
 	}
 
-	ProductList = append(ProductList, prd1, prd2, prd3, prd4, prd5, prd6)
+	productList = append(productList, prd1, prd2, prd3, prd4, prd5, prd6)
 }
