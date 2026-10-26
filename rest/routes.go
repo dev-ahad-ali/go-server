@@ -22,7 +22,15 @@ func initRoutes(mux *http.ServeMux, manger *middleware.Manger) {
 		http.HandlerFunc(handlers.CreateProducts),
 	))
 
-	mux.Handle("GET /products/{productId}", manger.With(
+	mux.Handle("GET /products/{id}", manger.With(
 		http.HandlerFunc(handlers.GetProductById),
+	))
+
+	mux.Handle("PUT /products/{id}", manger.With(
+		http.HandlerFunc(handlers.UpdateProduct),
+	))
+
+	mux.Handle("DELETE /products/{id}", manger.With(
+		http.HandlerFunc(handlers.DeleteProduct),
 	))
 }
