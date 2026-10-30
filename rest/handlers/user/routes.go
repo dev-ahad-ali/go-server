@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (h *Handler) RegisterRoutes(mux *http.ServeMux, manager middleware.Manger) {
+func (h *Handler) RegisterRoutes(mux *http.ServeMux, manager *middleware.Manger) {
 	mux.Handle("POST /users", manager.With(
 		http.HandlerFunc(h.CreateUser),
 	))

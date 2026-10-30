@@ -1,17 +1,11 @@
 package product
 
 import (
-	"ecommerce/rest/handlers"
 	middleware "ecommerce/rest/middlewares"
 	"net/http"
 )
 
 func (h *Handler) RegisterRoutes(mux *http.ServeMux, manger *middleware.Manger) {
-	mux.Handle("GET /test", manger.With(
-		http.HandlerFunc(handlers.Test),
-		middleware.Testing,
-	))
-
 	mux.Handle("GET /products", manger.With(
 		http.HandlerFunc(h.GetProducts),
 	))

@@ -2,26 +2,41 @@ package rest
 
 import (
 	"ecommerce/config"
+	"ecommerce/rest/handlers/product"
+	"ecommerce/rest/handlers/user"
 	middleware "ecommerce/rest/middlewares"
 	"fmt"
 	"net/http"
 	"strconv"
 )
 
-func Start(cnf config.Config) {
-	manger := middleware.NewManger()
-	manger.Use(
+type Server struct {
+	productHandler *product.Handler
+	userHandler    *user.Handler
+}
+
+func NewServer(productHandler *product.Handler, userHandler *user.Handler) *Server {
+	return &Server{
+		productHandler: productHandler,
+		userHandler:    userHandler,
+	}
+}
+
+func (server *Server) Start(cnf config.Config) {
+	manager := middleware.NewManger()
+	manager.Use(
 		middleware.Preflight,
 		middleware.Cors,
 		middleware.Logger,
 	)
 
 	mux := http.NewServeMux()
-	wrappedMax := manger.WrapMux(mux)
-
-	initRoutes(mux, manger)
+	wrappedMax := manager.WrapMux(mux)
 
 	addr := ":" + strconv.Itoa(cnf.HttpPort)
+
+	server.productHandler.RegisterRoutes(mux, manager)
+	server.userHandler.RegisterRoutes(mux, manager)
 
 	fmt.Println("Server listening on port", addr)
 
