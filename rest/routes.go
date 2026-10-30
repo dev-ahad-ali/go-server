@@ -33,7 +33,4 @@ func initRoutes(mux *http.ServeMux, manger *middleware.Manger) {
 		http.HandlerFunc(handlers.DeleteProduct),
 	))
 
-	mux.Handle("POST /users", manger.With(
-		http.HandlerFunc(handlers.CreateUser),
-	))
 }
