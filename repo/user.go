@@ -18,6 +18,11 @@ type userRepo struct {
 	users []*User
 }
 
+func NewUserRepo() UserRepo {
+	repo := &userRepo{}
+	return repo
+}
+
 func (r *userRepo) Create(user User) (*User, error) {
 	if user.ID != 0 {
 		return nil, nil
