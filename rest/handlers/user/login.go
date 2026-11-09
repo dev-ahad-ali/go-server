@@ -1,7 +1,6 @@
 package user
 
 import (
-	"ecommerce/config"
 	"ecommerce/utils"
 	"encoding/json"
 	"fmt"
@@ -32,9 +31,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cnf := config.GetConfig()
-
-	accessToken, err := utils.CreateJwt(cnf.JwtSecretKey, utils.Payload{
+	accessToken, err := utils.CreateJwt(h.cnf.JwtSecretKey, utils.Payload{
 		Sub:       usr.ID,
 		FirstName: usr.FirstName,
 		LastName:  usr.LastName,
