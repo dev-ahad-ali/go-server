@@ -10,16 +10,16 @@ func (h *Handler) DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	pId, err := strconv.Atoi(r.PathValue("id"))
 
 	if err != nil {
-		http.Error(w, "Please provide a valid product Id", http.StatusBadRequest)
+		utils.SendError(w, http.StatusBadRequest, "Please provide a valid product Id")
 		return
 	}
 
 	err = h.productRepo.Delete(pId)
 
 	if err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		utils.SendError(w, http.StatusInternalServerError, "Internal server error")
 		return
 	}
 
-	utils.SendData(w, "Product deleted successfully", 201)
+	utils.SendData(w, http.StatusOK, "Product deleted successfully")
 }

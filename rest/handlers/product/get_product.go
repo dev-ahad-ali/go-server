@@ -10,22 +10,22 @@ func (h *Handler) GetProductById(w http.ResponseWriter, r *http.Request) {
 	pId, err := strconv.Atoi(r.PathValue("id"))
 
 	if err != nil {
-		http.Error(w, "Please provide a valid product Id", http.StatusBadRequest)
+		utils.SendError(w, http.StatusBadRequest, "Please provide a valid product Id")
 		return
 	}
 
 	product, err := h.productRepo.Get(pId)
 
 	if err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		utils.SendError(w, http.StatusInternalServerError, "Internal server error")
 		return
 	}
 
 	if product == nil {
-		utils.SendError(w, 404, "Product not found")
+		utils.SendError(w, http.StatusNotFound, "Product not found")
 		return
 	}
 
-	utils.SendData(w, product, 200)
+	utils.SendData(w, http.StatusOK, product)
 
 }
