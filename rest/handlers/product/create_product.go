@@ -24,6 +24,7 @@ func (h *Handler) CreateProducts(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 		http.Error(w, "Please give me valid JSON", 400)
+		return
 	}
 
 	createdProduct, err := h.productRepo.Create(repo.Product{
@@ -35,6 +36,7 @@ func (h *Handler) CreateProducts(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
 	}
 
 	utils.SendData(w, createdProduct, http.StatusCreated)
