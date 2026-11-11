@@ -21,12 +21,12 @@ type UserRepo interface {
 }
 
 type userRepo struct {
-	dbCon *sqlx.DB
+	db *sqlx.DB
 }
 
 func NewUserRepo(dbCon *sqlx.DB) UserRepo {
 	return &userRepo{
-		dbCon: dbCon,
+		db: dbCon,
 	}
 }
 
@@ -50,7 +50,7 @@ func (r *userRepo) Create(user User) (*User, error) {
 	`
 	// execute named query
 	var userID int
-	rows, err := r.dbCon.NamedQuery(query, user)
+	rows, err := r.db.NamedQuery(query, user)
 
 	if err != nil {
 		return nil, err
@@ -73,10 +73,10 @@ func (r *userRepo) Find(email, pass string) (*User, error) {
 		WHERE email = $1 AND password = $2
 		LIMIT 1
 	`
-	err := r.dbCon.Get(&user, query, email, pass)
+	err := r.db.Get(&user, query, email, pass)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, nil
+			return nil, nil // no matching rows
 		}
 		return nil, err
 	}
