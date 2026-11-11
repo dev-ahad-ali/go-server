@@ -10,7 +10,7 @@ func (h *Handler) RegisterRoutes(mux *http.ServeMux, manager *middleware.Manger)
 		http.HandlerFunc(h.CreateUser),
 	))
 
-	mux.Handle("Post /users/login", manager.With(
+	mux.Handle("POST /users/login", manager.With(
 		http.HandlerFunc(h.Login),
 	))
 
