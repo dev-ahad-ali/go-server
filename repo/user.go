@@ -1,5 +1,7 @@
 package repo
 
+import "github.com/jmoiron/sqlx"
+
 type User struct {
 	ID          int    `json:"id"`
 	FirstName   string `json:"first_name"`
@@ -15,22 +17,46 @@ type UserRepo interface {
 }
 
 type userRepo struct {
-	users []*User
+	dbCon *sqlx.DB
 }
 
-func NewUserRepo() UserRepo {
-	repo := &userRepo{}
-	return repo
+func NewUserRepo(dbCon *sqlx.DB) UserRepo {
+	return &userRepo{
+		dbCon: dbCon,
+	}
 }
 
 func (r *userRepo) Create(user User) (*User, error) {
-	if user.ID != 0 {
-		return nil, nil
+	query := `
+		INSERT INTO users (
+			first_name,
+			last_name,
+			email,
+			password,
+			is_shop_owner
+		)
+		VALUES (
+			:first_name,
+			:last_name,
+			:email,
+			:password,
+			:is_shop_owner
+		)
+		RETURNING id
+	`
+	// execute named query
+	var userID int
+	rows, err := r.dbCon.NamedQuery(query, user)
+
+	if err != nil {
+		return nil, err
 	}
 
-	user.ID = len(r.users) + 1
+	if rows.Next() {
+		rows.Scan(&userID)
+	}
 
-	r.users = append(r.users, &user)
+	user.ID = userID
 	return &user, nil
 }
 
