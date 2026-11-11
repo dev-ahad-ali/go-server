@@ -1,6 +1,10 @@
 package repo
 
-import "github.com/jmoiron/sqlx"
+import (
+	"database/sql"
+
+	"github.com/jmoiron/sqlx"
+)
 
 type User struct {
 	ID          int    `json:"id"`
@@ -61,10 +65,21 @@ func (r *userRepo) Create(user User) (*User, error) {
 }
 
 func (r *userRepo) Find(email, pass string) (*User, error) {
-	for _, u := range r.users {
-		if u.Email == email && u.Password == pass {
-			return u, nil
+	var user User
+
+	query := `
+		SELECT id, first_name, last_name, email, password, is_shop_owner
+		FROM users
+		WHERE email = $1 AND password = $2
+		LIMIT 1
+	`
+	err := r.dbCon.Get(&user, query, email, pass)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
 		}
+		return nil, err
 	}
-	return nil, nil
+
+	return &user, nil
 }
