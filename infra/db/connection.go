@@ -8,7 +8,7 @@ import (
 )
 
 func GetConnectionString() string {
-	return "user=postgres password=postgres host=localhost port=5432 dbname=ecommerce"
+	return "user=postgres password=postgres host=localhost port=5432 dbname=ecommerce sslmode=disable"
 }
 
 func NewConnection() (*sqlx.DB, error) {
