@@ -8,11 +8,21 @@ import (
 	"github.com/joho/godotenv"
 )
 
+type DBConfig struct {
+	Host          string
+	Port          string
+	Name          string
+	User          string
+	Password      string
+	EnableSSLMode bool
+}
+
 type Config struct {
 	Version      string
 	ServiceName  string
 	HttpPort     int
 	JwtSecretKey string
+	DB           DBConfig
 }
 
 var configuration *Config
