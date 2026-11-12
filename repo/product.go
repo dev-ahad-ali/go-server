@@ -105,27 +105,31 @@ func (r *productRepo) List() ([]*Product, error) {
 	return prdList, nil
 }
 
-func (r *productRepo) Delete(productId int) error {
-	var tempList []*Product
+func (r *productRepo) Update(p Product) (*Product, error) {
+	query := `
+		UPDATE products
+		SET title=$1, description=$2, price=$3, img_url=$4
+		WHERE id = $5
+	`
 
-	for _, p := range r.productList {
-		if p.ID == productId {
-			tempList = append(tempList, p)
-		}
+	row := r.db.QueryRow(query, p.Title, p.Description, p.Price, p.ImgUrl, p.ID)
+	err := row.Err()
+	if err != nil {
+		return nil, err
 	}
 
-	r.productList = tempList
-
-	return nil
+	return &p, nil
 }
 
-func (r *productRepo) Update(product Product) (*Product, error) {
+func (r *productRepo) Delete(id int) error {
+	query := `
+		DELETE FROM products WHERE id = $1
+	`
+	_, err := r.db.Exec(query, id)
 
-	for idx, p := range r.productList {
-		if p.ID == product.ID {
-			r.productList[idx] = &product
-		}
+	if err != nil {
+		return err
 	}
 
-	return &product, nil
+	return nil
 }
