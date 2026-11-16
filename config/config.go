@@ -68,14 +68,14 @@ func loadConfig() {
 		os.Exit(1)
 	}
 
-	dbHost := os.Getenv("HOST")
+	dbHost := os.Getenv("DB_HOST")
 
 	if dbHost == "" {
 		fmt.Println("Database Host is required")
 		os.Exit(1)
 	}
 
-	dbPrt := os.Getenv("PORT")
+	dbPrt := os.Getenv("DB_PORT")
 
 	if dbPrt == "" {
 		fmt.Println("Database Port is required")
@@ -89,28 +89,28 @@ func loadConfig() {
 		os.Exit(1)
 	}
 
-	dbName := os.Getenv("NAME")
+	dbName := os.Getenv("DB_NAME")
 
 	if dbName == "" {
 		fmt.Println("Database name is required")
 		os.Exit(1)
 	}
 
-	dbUser := os.Getenv("USER")
+	dbUser := os.Getenv("DB_USER")
 
 	if dbUser == "" {
 		fmt.Println("Database user is required")
 		os.Exit(1)
 	}
 
-	dbPassword := os.Getenv("PASSWORD")
+	dbPassword := os.Getenv("DB_PASSWORD")
 
 	if dbPassword == "" {
 		fmt.Println("Database password is required")
 		os.Exit(1)
 	}
 
-	enableSslMode := os.Getenv("ENABLE_SSL_MODE")
+	enableSslMode := os.Getenv("DB_ENABLE_SSL_MODE")
 	enbSslMode, err := strconv.ParseBool(enableSslMode)
 
 	if err != nil {
