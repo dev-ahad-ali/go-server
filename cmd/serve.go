@@ -9,6 +9,7 @@ import (
 	"ecommerce/rest/handlers/user"
 	middleware "ecommerce/rest/middlewares"
 	"fmt"
+	"os"
 )
 
 func Serve() {
@@ -19,6 +20,13 @@ func Serve() {
 	if err != nil {
 		fmt.Println(err)
 		return
+	}
+
+	err = db.MigrateDB(dbCon, "./migrations")
+
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
 
 	userRepo := repo.NewUserRepo(dbCon)
